@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const noResults = document.getElementById('no-results');
 
     // Modals
-    const downloadModal = document.getElementById('download-modal');
     const closeButtons = document.querySelectorAll('.close-modal');
 
     // State
@@ -78,6 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Prioritize English subtitles
+        subtitles.sort((a, b) => {
+            const isEnA = a.attributes.language === 'en' || a.attributes.language === 'en-US';
+            const isEnB = b.attributes.language === 'en' || b.attributes.language === 'en-US';
+            if (isEnA && !isEnB) return -1;
+            if (!isEnA && isEnB) return 1;
+            return b.attributes.download_count - a.attributes.download_count; // Secondary sort by downloads
+        });
+
         subtitles.forEach(sub => {
             const card = createResultCard(sub);
             resultsGrid.appendChild(card);
@@ -121,10 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!apiKey) return;
 
         try {
-            // Note: For actual file download, we need to request a download link
-            // This usually requires a user token (JWT) for higher limits, but let's try with just API Key first
-            // If it fails, we might need to guide user to login (out of scope for simple key version, but we'll try best effort)
-
             const response = await fetch(`${API_BASE_URL}/download`, {
                 method: 'POST',
                 headers: {
@@ -143,17 +147,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
 
-            // Open download modal
-            const downloadInfo = document.getElementById('download-info');
-            const downloadLink = document.getElementById('download-link');
+            // Force download by fetching the content and creating a blob
+            showToast('Fetching subtitle file...', 'info');
 
-            downloadInfo.innerHTML = `
-                <p><strong>File:</strong> ${data.file_name}</p>
-                <p>Your download is ready.</p>
-            `;
-            downloadLink.href = data.link;
+            const fileResponse = await fetch(data.link);
+            const blob = await fileResponse.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            // Ensure filename ends with .srt
+            let fileName = data.file_name;
+            if (!fileName.endsWith('.srt')) fileName += '.srt';
+            a.download = fileName;
 
-            openModal(downloadModal);
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            showToast('Download started!', 'success');
 
         } catch (error) {
             console.error('Download error:', error);
