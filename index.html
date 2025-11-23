@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beamlak's SRTs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-glow"></div>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-closed-captioning"></i>
+            <span>Beamlak's SRTs</span>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Find the perfect subtitles</h1>
+            <p>Search and download subtitles for your favorite movies and shows.</p>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-search search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search for a movie or TV show...">
+                    <button id="search-btn">Search</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="results-section" class="hidden">
+            <div class="section-header">
+                <h2>Results</h2>
+                <div class="loading-spinner hidden" id="loading-spinner"></div>
+            </div>
+            <div id="results-grid" class="results-grid">
+                <!-- Results will be injected here -->
+            </div>
+            <div id="no-results" class="no-results hidden">
+                <i class="fa-regular fa-face-sad-tear"></i>
+                <p>No subtitles found. Try a different keyword.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Download Modal -->
+    <div id="download-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Download Subtitle</h3>
+                <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="download-info">
+                    <!-- File info injected here -->
+                </div>
+                <div class="download-actions">
+                    <a id="download-link" href="#" target="_blank" class="primary-btn download-btn">
+                        <i class="fa-solid fa-download"></i> Download Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
