@@ -1,59 +1,438 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beamlak's SRTs</title>
+    <title>rekikOS | Theme Guide</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8291318662963075"
-     crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- CSS VARIABLES (Theming) --- */
+        :root {
+            /* Light Theme (Default) */
+            --bg-color: #FAFAFA;
+            --surface-color: #FFFFFF;
+            --surface-variant: #F2EBE9; /* Very light brown tint */
+            --text-primary: #3E2723; /* Deep Brown */
+            --text-secondary: #5D4037;
+            --primary-color: #8D6E63; /* The "Perfect Brown" */
+            --on-primary: #FFFFFF;
+            --primary-container: #D7CCC8;
+            --on-primary-container: #3E2723;
+            --outline: #D7CCC8;
+            
+            --transition-speed: 0.4s;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme */
+            --bg-color: #1a1615;
+            --surface-color: #2D2624;
+            --surface-variant: #403634;
+            --text-primary: #EFEBE9;
+            --text-secondary: #D7CCC8;
+            --primary-color: #D7CCC8; /* Lighter brown for dark mode contrast */
+            --on-primary: #3E2723;
+            --primary-container: #5D4037;
+            --on-primary-container: #FFDBCF;
+            --outline: #5D4037;
+        }
+
+        /* --- GLOBAL STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* Remove blue highlight on mobile tap */
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; }
+        ul { list-style: none; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: var(--surface-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .theme-toggle {
+            background: var(--surface-variant);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: transform 0.2s ease, background-color 0.3s;
+        }
+
+        .theme-toggle:active { transform: scale(0.9); }
+        .theme-toggle span { font-size: 24px; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards 0.2s;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards 0.4s;
+        }
+
+        .cta-button {
+            background-color: var(--primary-color);
+            color: var(--on-primary);
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 24px rgba(141, 110, 99, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards 0.6s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(141, 110, 99, 0.4);
+        }
+        
+        .cta-button:active { transform: scale(0.96); }
+
+        /* --- DOWNLOAD CARDS SECTION --- */
+        .downloads-container {
+            padding: 60px 20px 100px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--surface-variant);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default;
+            
+            /* Scroll Animation Initial State */
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            border-color: var(--primary-color);
+        }
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            background-color: var(--surface-variant);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .download-btn {
+            background-color: var(--primary-container);
+            color: var(--on-primary-container);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--on-primary);
+            transform: rotate(-15deg);
+        }
+        
+        .download-btn:active { transform: scale(0.9); }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 3rem; }
+            .card {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px;
+            }
+            .card-icon { margin-bottom: 10px; }
+            .download-btn {
+                width: 100%;
+                border-radius: 100px;
+                margin-top: 15px;
+                height: 50px;
+            }
+            .download-btn span { display: none; } /* Hide icon on mobile button */
+            .download-btn::after {
+                content: "Download";
+                font-weight: 600;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <div class="background-glow"></div>
 
-    <header>
-        <div class="logo">
-            <i class="fa-solid fa-closed-captioning"></i>
-            <span>Beamlak's SRTs</span>
-        </div>
+    <nav id="navbar">
+        <div class="logo">rekikOS</div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+            <span class="material-icons-round">dark_mode</span>
+        </button>
+    </nav>
+
+    <header class="hero">
+        <h1>Make it yours.</h1>
+        <p>The ultimate Material guide to customizing your experience. Designed for Rekik.</p>
+        <a href="#downloads" class="cta-button">
+            Get Started <span class="material-icons-round">arrow_downward</span>
+        </a>
     </header>
 
-    <main>
-        <section class="hero">
-            <h1>Find the perfect subtitles</h1>
-            <p>Search and download subtitles for your favorite movies and shows.</p>
+    <section id="downloads" class="downloads-container">
+        <h2 class="section-title">Essentials</h2>
 
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fa-solid fa-search search-icon"></i>
-                    <input type="text" id="search-input" placeholder="Search for a movie or TV show...">
-                    <button id="search-btn">Search</button>
-                </div>
-            </div>
-        </section>
 
-        <section id="results-section" class="hidden">
-            <div class="section-header">
-                <h2>Results</h2>
-                <div class="loading-spinner hidden" id="loading-spinner"></div>
+        <div class="card">
+            <div class="card-icon">
+                <span class="material-icons-round" style="font-size: 32px;">auto_awesome</span>
             </div>
-            <div id="results-grid" class="results-grid">
-                <!-- Results will be injected here -->
+            <div class="card-content">
+                <div class="card-title">rekikOS Guide</div>
+                <div class="card-desc">The core application. Start your customization journey here.</div>
             </div>
-            <div id="no-results" class="no-results hidden">
-                <i class="fa-regular fa-face-sad-tear"></i>
-                <p>No subtitles found. Try a different keyword.</p>
+            <a href="#" class="download-btn" onclick="alert('Link coming soon!'); return false;">
+                <span class="material-icons-round">download</span>
+            </a>
+        </div>
+        
+                
+        
+        <div class="card">
+            <div class="card-icon">
+                <span class="material-icons-round" style="font-size: 32px;">palette</span>
             </div>
-        </section>
-    </main>
+            <div class="card-content">
+                <div class="card-title">Galaxy Themes</div>
+                <div class="card-desc">The app that opens the way to icon customizing.</div>
+            </div>
+            <a href="https://github.com/beamlakchernetschool/rekikOS/releases/download/widget/samsung-theme-park-1-1-01-5.apk" class="download-btn">
+                <span class="material-icons-round">download</span>
+            </a>
+        </div>
+        
+        
+        
+        
 
-    <script src="script.js"></script>
+        <div class="card">
+            <div class="card-icon">
+                <span class="material-icons-round" style="font-size: 32px;">widgets</span>
+            </div>
+            <div class="card-content">
+                <div class="card-title">Widget App</div>
+                <div class="card-desc">M3 Expressive Widgets. Add functionality and style to your home screen.</div>
+            </div>
+            <a href="https://github.com/beamlakchernetschool/rekikOS/releases/download/widget/M3.Expressive.Widgets.v2.4.Paid.apk" class="download-btn">
+                <span class="material-icons-round">download</span>
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <span class="material-icons-round" style="font-size: 32px;">apps</span>
+            </div>
+            <div class="card-content">
+                <div class="card-title">Icon Pack</div>
+                <div class="card-desc">Simply Adaptive Icons. A cohesive look for your app drawer.</div>
+            </div>
+            <a href="https://github.com/beamlakchernetschool/rekikOS/releases/download/widget/Simply.Adaptive.-.Icon.Pack.v5.7.Paid.apk" class="download-btn">
+                <span class="material-icons-round">download</span>
+            </a>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>Created for Rekik by bumbum🖕</p>
+    </footer>
+
+    <script>
+        // --- 1. Theme Toggle Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('span');
+        const html = document.documentElement;
+
+        // Check local storage or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            themeIcon.textContent = theme === 'light' ? 'dark_mode' : 'light_mode';
+        }
+
+        // --- 2. Scroll Animation (Intersection Observer) ---
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // --- 3. Navbar Scroll Effect ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
-
 </html>
